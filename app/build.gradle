@@ -39,4 +39,18 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    implementation 'com.google.dagger:dagger:2.11'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
+
+    compile 'com.jakewharton.timber:timber:4.5.1'
+
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    // Include all the Twitter APIs
+    compile 'com.twitter.sdk.android:twitter:3.1.1'
+    // (Optional) Monetize using mopub
+    compile 'com.twitter.sdk.android:twitter-mopub:3.1.1'
+    compile 'javax.inject:javax.inject:1'
 }

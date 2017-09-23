@@ -1,11 +1,13 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data.api;
 
-import android.view.LayoutInflater;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.soft.unikey.vkluchak.testtwitterapp.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -16,12 +18,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by user on 23.09.17.
  */
-
+@Singleton
 public class Api {
     private final static String API_BASE_URL = "https://api.twitter.com";
+    private final static String API_VERSION = "/1.1/";
 
     private TwitterApi apiBase;
 
+    @Inject
     public Api(){
         apiBase = Factory.makeTwitterBaseApi();
     }
@@ -34,11 +38,9 @@ public class Api {
     public static class Factory {
         public static TwitterApi makeTwitterBaseApi(){
             return  configureRetrofitBuilder(
-                    configureHttpClient(), API_BASE_URL)
+                    configureHttpClient(), API_BASE_URL + API_VERSION)
                     .create(TwitterApi.class);
         }
-
-
 
         private static Retrofit configureRetrofitBuilder(OkHttpClient okHttpClient, String currentUrl) {
             Retrofit.Builder builder = new Retrofit.Builder()

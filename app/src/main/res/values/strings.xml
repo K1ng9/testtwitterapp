@@ -1,4 +1,10 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
     <string name="app_name">TestTwitterApp</string>
     <string name="action_settings">Settings</string>
+
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">CncvECzq4uBkrSzSmDAh8DphB</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">LXkpMgyyiBIFITlz169WwDUXfvWwYwxJ1DjJqIxn0tQC5Tzz1x</string>
+
+
+
 </resources>

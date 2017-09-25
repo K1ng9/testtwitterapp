@@ -1,4 +1,19 @@
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 26
@@ -38,7 +53,7 @@ dependencies {
     // retrofit
     compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
     implementation 'com.google.dagger:dagger:2.11'
     annotationProcessor "com.google.dagger:dagger-compiler:2.11"
@@ -48,12 +63,15 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
-    // Include all the Twitter APIs
-    compile 'com.twitter.sdk.android:twitter:3.1.1'
-    // (Optional) Monetize using mopub
-    compile 'com.twitter.sdk.android:twitter-mopub:3.1.1'
     compile 'javax.inject:javax.inject:1'
 
-    // Twitter lib
-    compile 'org.twitter4j:twitter4j-core:4.0.4'
+    compile('com.twitter.sdk.android:twitter:1.10.0@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
+    }
+
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
 }

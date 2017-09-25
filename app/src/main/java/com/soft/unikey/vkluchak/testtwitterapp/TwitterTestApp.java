@@ -3,12 +3,15 @@ package com.soft.unikey.vkluchak.testtwitterapp;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.component.ApplicationComponent;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.component.DaggerApplicationComponent;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.module.ApplicationModule;
-import com.twitter.sdk.android.core.Twitter;
+import io.fabric.sdk.android.Fabric;
 
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 import timber.log.Timber;
 
 /**
@@ -22,8 +25,6 @@ public class TwitterTestApp extends Application {
 
     public void onCreate() {
         super.onCreate();
-
-        Twitter.initialize(this);
 
         if (BuildConfig.DEBUG){
             doDebugWork();
@@ -39,7 +40,7 @@ public class TwitterTestApp extends Application {
     private void doReleaseWork() {
         Timber.plant(new Timber.DebugTree());
         // use Crashlytics for crash reporting
-      //  Fabric.with(this, new Crashlytics());
+       // Fabric.with(this, new Crashlytics());
 
     }
 

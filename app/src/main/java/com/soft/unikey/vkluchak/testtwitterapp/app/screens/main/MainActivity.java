@@ -1,5 +1,7 @@
-package com.soft.unikey.vkluchak.testtwitterapp.app.screens;
+package com.soft.unikey.vkluchak.testtwitterapp.app.screens.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +14,13 @@ import android.view.MenuItem;
 import com.soft.unikey.vkluchak.testtwitterapp.R;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    public static void startNavigationActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

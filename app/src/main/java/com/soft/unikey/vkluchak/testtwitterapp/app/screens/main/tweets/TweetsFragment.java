@@ -1,20 +1,19 @@
-package com.soft.unikey.vkluchak.testtwitterapp.app.screens;
+package com.soft.unikey.vkluchak.testtwitterapp.app.screens.main.tweets;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
+import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseFragment;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class TweetsFragment extends BaseFragment {
 
-    public MainActivityFragment() {
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

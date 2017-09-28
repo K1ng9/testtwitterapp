@@ -7,4 +7,6 @@ import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.MvpView;
  */
 
 interface LoginMvpView extends MvpView {
+    void onSignInError(Throwable e);
+    void onSignInSuccessful();
 }

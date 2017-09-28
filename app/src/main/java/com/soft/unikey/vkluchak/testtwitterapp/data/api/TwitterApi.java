@@ -13,4 +13,6 @@ public interface TwitterApi {
   //  @GET("/statuses/home_timeline.json")
    // Observable<>
 
+   // https://api.twitter.com/1.1/statuses/home_timeline.json
+
 }

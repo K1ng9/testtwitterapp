@@ -45,7 +45,6 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
             @Override
             public void success(Result<List<Tweet>> list) {
                 if (list != null && list.data != null) {
-                  //  List<Tweet> tweetList;
                     if (mMvpView != null) mMvpView.currentUserTweetsList(list.data);
                 }
             }

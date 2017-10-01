@@ -2,11 +2,12 @@ package com.soft.unikey.vkluchak.testtwitterapp.app.screens.main.tweets;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
@@ -14,6 +15,7 @@ import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseFragment;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,8 +30,11 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     @Inject
     TweetsPresenter tweetsPresenter;
 
-    @BindView(R.id.tvText)
-    TextView tvText;
+    @BindView(R.id.rvTweets)
+    RecyclerView rvTweets;
+    private LinearLayoutManager linearLayoutManager;
+    private ArrayList<Tweet> dataList;
+    private TweetAdapter adapter;
 
     public static TweetsFragment newInstance() {
         return new TweetsFragment();
@@ -53,13 +58,25 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+        dataList = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        adapter = new TweetAdapter(getActivity(), dataList);
+
+        rvTweets.setLayoutManager(linearLayoutManager);
+        rvTweets.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         tweetsPresenter.getCurrentUserTwits();
     }
 
-
     @Override
-    public void currentUserTweetsList(List<Tweet> data) {
-        tvText.setText(data.toString());
+    public void currentUserTweetsList(List<Tweet> newTweetsList) {
+        adapter.setNewData(newTweetsList);
     }
 
     @Override

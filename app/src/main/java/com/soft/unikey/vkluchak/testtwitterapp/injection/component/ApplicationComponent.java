@@ -3,6 +3,7 @@ package com.soft.unikey.vkluchak.testtwitterapp.injection.component;
 import android.app.Application;
 import android.content.Context;
 
+import com.soft.unikey.vkluchak.testtwitterapp.app.events.RXPublishSubBus;
 import com.soft.unikey.vkluchak.testtwitterapp.data.DataManager;
 import com.soft.unikey.vkluchak.testtwitterapp.data.api.Api;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.ApplicationContext;
@@ -23,4 +24,5 @@ public interface ApplicationComponent {
     Application application();
     Api api();
     DataManager dataManager();
+    RXPublishSubBus pxPublishSubBus();
 }

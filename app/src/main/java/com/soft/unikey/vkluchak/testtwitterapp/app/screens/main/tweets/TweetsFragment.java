@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
 import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseFragment;
+import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
@@ -33,7 +34,7 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     @BindView(R.id.rvTweets)
     RecyclerView rvTweets;
     private LinearLayoutManager linearLayoutManager;
-    private ArrayList<Tweet> dataList;
+    private ArrayList<TweetUiModel> dataList;
     private TweetAdapter adapter;
 
     public static TweetsFragment newInstance() {
@@ -59,7 +60,6 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         dataList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity());
         adapter = new TweetAdapter(getActivity(), dataList);
@@ -75,7 +75,7 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     }
 
     @Override
-    public void currentUserTweetsList(List<Tweet> newTweetsList) {
+    public void currentUserTweetsList(List<TweetUiModel> newTweetsList) {
         adapter.setNewData(newTweetsList);
     }
 

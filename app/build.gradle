@@ -32,6 +32,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -78,6 +82,9 @@ dependencies {
         transitive = true
     }
 
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    //StorIO for local SQLite DB work
+    compile 'com.pushtorefresh.storio:sqlite:1.13.0'
+    provided 'com.pushtorefresh.storio:sqlite-annotations:1.12.3'
+    annotationProcessor 'com.pushtorefresh.storio:sqlite-annotations-processor:1.12.3'
 
 }

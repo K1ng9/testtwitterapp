@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.soft.unikey.vkluchak.testtwitterapp.R;
 import com.soft.unikey.vkluchak.testtwitterapp.app.utils.DateConverterUtils;
 import com.soft.unikey.vkluchak.testtwitterapp.app.utils.TextViewUtils;
+import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ import butterknife.ButterKnife;
 public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final Context mContext;
-    private List<Tweet> dataList = new ArrayList<>();
+    private List<TweetUiModel> dataList = new ArrayList<>();
 
-    public TweetAdapter(Context context, List<Tweet> tweetList) {
+    public TweetAdapter(Context context, List<TweetUiModel> tweetList) {
         this.mContext = context;
         this.dataList = tweetList;
     }
@@ -41,9 +42,9 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         TweeterViewHolder holder = (TweeterViewHolder) viewHolder;
-        Tweet tweetItem = dataList.get(position);
+        TweetUiModel tweetItem = dataList.get(position);
 
-        if(tweetItem.user != null) {
+        if(tweetItem.getUser() != null) {
             holder.tvUserName.setText(
                     TextViewUtils.getTextForTextView(mContext, tweetItem.user.name));
         }
@@ -56,7 +57,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 TextViewUtils.getTextForTextView(mContext, tweetItem.text));
     }
 
-    public void setNewData(List<Tweet> tweetList) {
+    public void setNewData(List<TweetUiModel> tweetList) {
         this.dataList.clear();
         this.dataList.addAll(tweetList);
         notifyDataSetChanged();

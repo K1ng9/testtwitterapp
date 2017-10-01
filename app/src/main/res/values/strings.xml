@@ -6,7 +6,7 @@
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">LXkpMgyyiBIFITlz169WwDUXfvWwYwxJ1DjJqIxn0tQC5Tzz1x</string>
 
     <string name="placeholder">No information</string>
-
+    <string name="no_connection_error"><![CDATA[<stringNo Internet connection is available]]></string>
 
 
 </resources>

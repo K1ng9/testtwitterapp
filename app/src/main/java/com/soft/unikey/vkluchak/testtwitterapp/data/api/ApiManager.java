@@ -1,5 +1,6 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data.api;
 
+import com.soft.unikey.vkluchak.testtwitterapp.data.api.util.InternetConnectionUtil;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -12,9 +13,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import okhttp3.ResponseBody;
-import retrofit.http.Query;
-import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -26,10 +24,12 @@ public class ApiManager {
     private StatusesService statusesService;
     private SearchService searchService;
     private ListService listService;
+    private final InternetConnectionUtil internetConnection;
 
     @Inject
-    public ApiManager(Api api){
+    public ApiManager(Api api, InternetConnectionUtil internetConnection){
         this.api = api;
+        this.internetConnection = internetConnection;
     }
 
     public void createSession() {
@@ -42,7 +42,14 @@ public class ApiManager {
         if(statusesService == null){
             createServices();
         }
-        statusesService.userTimeline(api.getSession().getUserId(), null, null, null,null,null, null, null, null, callBack);
+
+        internetConnection.isInternetOn()
+                .switchMap(connectionStatus -> {
+                    statusesService.userTimeline(api.getSession().getUserId(), null, null, null, null, null, null, null, null, callBack);
+
+                    //TODO  delete it
+                    return Observable.just(true);
+                });
     }
 
     private void createServices() {

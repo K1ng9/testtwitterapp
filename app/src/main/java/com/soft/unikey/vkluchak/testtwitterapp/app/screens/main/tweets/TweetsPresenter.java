@@ -2,6 +2,7 @@ package com.soft.unikey.vkluchak.testtwitterapp.app.screens.main.tweets;
 
 import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.Presenter;
 import com.soft.unikey.vkluchak.testtwitterapp.data.DataManager;
+import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -41,18 +42,10 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
     }
 
     void getCurrentUserTwits(){
-        mDataManager.getCurrentUserTwits(new Callback<List<Tweet>>() {
-            @Override
-            public void success(Result<List<Tweet>> list) {
-                if (list != null && list.data != null) {
-                    if (mMvpView != null) mMvpView.currentUserTweetsList(list.data);
-                }
-            }
+        if (list != null && list.data != null) {
+            if (mMvpView != null) mMvpView.currentUserTweetsList(list.data);
+        }
 
-            @Override
-            public void failure(TwitterException e) {
-                if(mMvpView != null) mMvpView.onError(e);
-            }
-        });
+        mSubscription = mDataManager.getCurrentUserTwits();
     }
 }

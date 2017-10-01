@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 
 import com.soft.unikey.vkluchak.testtwitterapp.TwitterTestApp;
+import com.soft.unikey.vkluchak.testtwitterapp.injection.component.DaggerFragmentComponent;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.component.FragmentComponent;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.module.FragmentModule;
 

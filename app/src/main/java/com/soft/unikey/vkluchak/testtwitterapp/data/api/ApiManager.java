@@ -2,9 +2,12 @@ package com.soft.unikey.vkluchak.testtwitterapp.data.api;
 
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.services.ListService;
 import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.StatusesService;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,22 +22,32 @@ import rx.Observable;
  */
 @Singleton
 public class ApiManager {
-    private final StatusesService statusesService;
-    private final SearchService searchService;
-    private final ListService listService;
+    private final Api api;
+    private StatusesService statusesService;
+    private SearchService searchService;
+    private ListService listService;
 
     @Inject
     public ApiManager(Api api){
+        this.api = api;
+    }
+
+    public void createSession() {
+        api.createSession();
+        createServices();
+    }
+
+    //TODO change it into Observables
+    public void getCurrentUserTwits(Callback<List<Tweet>> callBack) {
+        if(statusesService == null){
+            createServices();
+        }
+        statusesService.userTimeline(api.getSession().getUserId(), null, null, null,null,null, null, null, null, callBack);
+    }
+
+    private void createServices() {
         searchService = Twitter.getApiClient(api.getSession()).getSearchService();
         listService = Twitter.getApiClient(api.getSession()).getListService();
         statusesService = Twitter.getApiClient(api.getSession()).getStatusesService();
-
     }
-
-
-    //TODO change it into Observables
-    public void getCurrentUserTwits(long userIdLong, Callback callBack) {
-        statusesService.userTimeline(userIdLong, null, null, null,null,null, null, null, null, callBack);
-    }
-
 }

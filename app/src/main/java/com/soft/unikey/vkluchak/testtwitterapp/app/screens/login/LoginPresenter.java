@@ -45,4 +45,8 @@ public class LoginPresenter implements Presenter<LoginMvpView> {
     public void safeUserId(long currentUserId) {
         mDataManager.safeUserId(currentUserId);
     }
+
+    public void createTwitterSession() {
+        mDataManager.createTwitterSession();
+    }
 }

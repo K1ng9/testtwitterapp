@@ -33,7 +33,7 @@ import com.twitter.sdk.android.core.models.User;
  * Created by user on 23.09.17.
  */
 
-public class LoginActivity extends BaseActivity implements LoginMvpView{
+public class LoginActivity extends BaseActivity{
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,12 +50,14 @@ public class LoginActivity extends BaseActivity implements LoginMvpView{
     }
 
     @Override
-    public void onSignInError(Throwable e) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    }
-
-    @Override
-    public void onSignInSuccessful() {
-
+        // Pass the activity result to the fragment, which will then pass the result to the login
+        // button.
+        LoginFragment fragment = (LoginFragment) getFragmentManager().findFragmentById(R.id.contentFrame);
+        if (fragment != null) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

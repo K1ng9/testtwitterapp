@@ -23,6 +23,7 @@ public class TwitterTestApp extends Application {
 
     private ApplicationComponent mApplicationComponent;
 
+
     private static final String TWITTER_KEY = "CncvECzq4uBkrSzSmDAh8DphB";
     private static final String TWITTER_SECRET = "LXkpMgyyiBIFITlz169WwDUXfvWwYwxJ1DjJqIxn0tQC5Tzz1x";
 
@@ -31,7 +32,7 @@ public class TwitterTestApp extends Application {
 
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
+        Fabric.with(getApplicationContext(), new Twitter(authConfig), new Crashlytics());
 
         if (BuildConfig.DEBUG){
             doDebugWork();

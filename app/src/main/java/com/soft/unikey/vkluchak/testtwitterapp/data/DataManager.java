@@ -5,6 +5,9 @@ import com.soft.unikey.vkluchak.testtwitterapp.data.local.PreferencesHelper;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -28,22 +31,15 @@ public class DataManager {
     }
 
     // TODO try change callbacks to Observables
-    public void getCurrentUserTwits() {
-
-        apiManager.getCurrentUserTwits(preferencesHelper.getUserId(), new Callback() {
-            @Override
-            public void success(Result result) {
-            }
-
-            @Override
-            public void failure(TwitterException e) {
-
-            }
-        });
-      //  return observable;
+    public void getCurrentUserTwits(Callback<List<Tweet>> callback) {
+        apiManager.getCurrentUserTwits(callback);
     }
 
     public void safeUserId(long currentUserId) {
         preferencesHelper.setUserId(currentUserId);
+    }
+
+    public void createTwitterSession() {
+        apiManager.createSession();
     }
 }

@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.soft.unikey.vkluchak.testtwitterapp.R;
 import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseFragment;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -24,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Vlad Kliuchak on 28.09.17.
@@ -49,8 +53,6 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
     TextView user_description;
     @BindView(R.id.profile_pic)
     ImageView user_picture;
-
-    TwitterSession session;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -78,57 +80,14 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-
-                // session = Twitter.getSessionManager().getActiveSession();
-                // Twitter.getApiClient(session).getSearchService().tweets();
-
+                loginPresenter.createTwitterSession();
                 loginPresenter.startMainActivity(getActivity());
-
-                Twitter.getApiClient(session).getAccountService()
-                        .verifyCredentials(true, false, new Callback<User>() {
-
-                            @Override
-                            public void success(Result<User> userResult) {
-                                if(userResult != null && userResult.data != null) {
-                                    loginPresenter.safeUserId(userResult.data.getId());
-                                }
-                                /*
-                                User user = userResult.data;
-
-                                twitterImage = user.profileImageUrl;
-                                screenname = user.screenName;
-                                username = user.name;
-                                location = user.location;
-                                timeZone = user.timeZone;
-                                description = user.description;
-
-                                Picasso.with(getApplicationContext()).load(twitterImage.toString())
-                                        .into(user_picture);
-
-                                screen_name.setText("Username : " + screenname);
-                                user_name.setText("Name : "+username);
-                                user_location.setText("Location : "+location);
-                                user_timezone.setText("Timezone : "+timeZone);
-                                user_description.setText("Description : "+description);
-                                */
-
-                            }
-
-                            @Override
-                            public void failure(TwitterException e) {
-                                Log.d("TwitterKit", "Login with Twitter failure", e);
-                            }
-
-                        });
-
-                  loginButton.setVisibility(View.GONE);
-
-
             }
 
             @Override
             public void failure(TwitterException exception) {
                 Log.d("TwitterKit", "Login with Twitter failure", exception);
+                Toast.makeText(getActivity() , "Login with Twitter failure: " + exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
 
 

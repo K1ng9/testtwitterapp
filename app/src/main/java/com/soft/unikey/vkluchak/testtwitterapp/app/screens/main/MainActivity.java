@@ -12,8 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
+import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseActivity;
+import com.soft.unikey.vkluchak.testtwitterapp.app.screens.login.LoginFragment;
+import com.soft.unikey.vkluchak.testtwitterapp.app.screens.main.tweets.TweetsFragment;
+import com.soft.unikey.vkluchak.testtwitterapp.app.utils.ActivityUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     public static void startNavigationActivity(Context context) {
@@ -26,17 +30,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+        TweetsFragment tweetsFragment =
+                (TweetsFragment) getFragmentManager().findFragmentById(R.id.contentFrame);
+        if (tweetsFragment == null) {
+            tweetsFragment = TweetsFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getFragmentManager(), tweetsFragment,
+                    R.id.contentFrame);
+        }
+
     }
 
     @Override

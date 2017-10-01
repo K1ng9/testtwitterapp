@@ -31,12 +31,12 @@ public class Api {
     private final static String API_VERSION = "/1.1/";
 
     private TwitterApi apiBase;
-    private final TwitterSession session;
+    private TwitterSession session;
 
     @Inject
     public Api() {
         apiBase = Factory.makeTwitterBaseApi();
-        session = Factory.makeTwitterSession();
+        //session = Factory.makeTwitterSession();
     }
 
 
@@ -45,7 +45,14 @@ public class Api {
     }
 
     public TwitterSession getSession() {
+        if(session == null){
+            createSession();
+        }
         return session;
+    }
+
+    public void createSession() {
+        session = Factory.makeTwitterSession();
     }
 
     public static class Factory {

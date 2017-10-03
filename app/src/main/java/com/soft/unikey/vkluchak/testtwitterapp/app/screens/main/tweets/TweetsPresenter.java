@@ -12,7 +12,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 /**
  * Created by Vlad Kliuchak on 28.09.17.
@@ -42,10 +46,26 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
     }
 
     void getCurrentUserTwits(){
-        if (list != null && list.data != null) {
-            if (mMvpView != null) mMvpView.currentUserTweetsList(list.data);
-        }
+        mSubscription = mDataManager.getCurrentUserTwits()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<TweetUiModel>>() {
+                    @Override
+                    public void onCompleted() {
 
-        mSubscription = mDataManager.getCurrentUserTwits();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("CurrentInspectionsResponse onError: " + e);
+                        if(mMvpView != null) mMvpView.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(List<TweetUiModel> tweetUiModels) {
+                        if(tweetUiModels != null)Timber.i("getCurrentUserTwits onNext: " + tweetUiModels.toString());
+                        if (mMvpView != null) mMvpView.currentUserTweetsList(tweetUiModels);
+                    }
+                });
     }
 }

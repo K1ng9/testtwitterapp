@@ -22,7 +22,7 @@ import rx.Observable;
 public class ApiManager {
     private final Api api;
     private StatusesService statusesService;
-    private SearchService searchService;
+    private TwitterApi twitter;
     private ListService listService;
     private final InternetConnectionUtil internetConnection;
 
@@ -33,28 +33,20 @@ public class ApiManager {
     }
 
     public void createSession() {
-        api.createSession();
+        api.createApiClient();
         createServices();
     }
 
     //TODO change it into Observables
-    public void getCurrentUserTwits(Callback<List<Tweet>> callBack) {
-        if(statusesService == null){
-            createServices();
-        }
-
-        internetConnection.isInternetOn()
-                .switchMap(connectionStatus -> {
-                    statusesService.userTimeline(api.getSession().getUserId(), null, null, null, null, null, null, null, null, callBack);
-
-                    //TODO  delete it
-                    return Observable.just(true);
-                });
+    public Observable<List<Tweet>> getCurrentUserTwits() {
+       return internetConnection.isInternetOn()
+                .switchMap(connectionStatus ->
+                        api.getApiBase().getHomeTimeLine(api.getSession().getUserId()));
     }
 
     private void createServices() {
-        searchService = Twitter.getApiClient(api.getSession()).getSearchService();
-        listService = Twitter.getApiClient(api.getSession()).getListService();
-        statusesService = Twitter.getApiClient(api.getSession()).getStatusesService();
+        //searchService = Twitter.getApiClient(api.getSession()).getSearchService();
+        //listService = Twitter.getApiClient(api.getSession()).getListService();
+        //statusesService = Twitter.getApiClient(api.getSession()).getStatusesService();
     }
 }

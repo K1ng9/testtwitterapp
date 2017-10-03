@@ -25,7 +25,7 @@ public class DataBaseUsageManager {
     }
 
 
-    public Observable<List<TweetUiModel>> getAmpTodayFiles() {
+    public Observable<List<TweetUiModel>> getTweets() {
         return storIOSQLite
                 .get()
                 .listOfObjects(TweetUiModel.class)

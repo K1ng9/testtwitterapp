@@ -15,4 +15,6 @@ public interface TweetsMvpView extends MvpView {
 
     void currentUserTweetsList(List<TweetUiModel> data);
     void onError(TwitterException e);
+
+    void onError(Throwable e);
 }

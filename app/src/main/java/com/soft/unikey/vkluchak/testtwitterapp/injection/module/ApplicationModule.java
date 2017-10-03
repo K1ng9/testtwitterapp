@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.soft.unikey.vkluchak.testtwitterapp.data.api.Api;
 import com.soft.unikey.vkluchak.testtwitterapp.data.api.TwitterApi;
+import com.soft.unikey.vkluchak.testtwitterapp.data.api.util.InternetConnectionUtil;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.ApplicationContext;
 
 import javax.inject.Singleton;
@@ -41,5 +42,10 @@ public class ApplicationModule {
         return Api.Factory.makeTwitterBaseApi();
     }
 
-
+    /* InternetConnection utility */
+    @Provides
+    @Singleton
+    InternetConnectionUtil provideInternetConnection() {
+        return new InternetConnectionUtil(mApplication.getApplicationContext());
+    }
 }

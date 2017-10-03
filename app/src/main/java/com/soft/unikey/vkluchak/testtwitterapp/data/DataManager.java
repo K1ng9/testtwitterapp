@@ -5,9 +5,6 @@ import com.soft.unikey.vkluchak.testtwitterapp.data.api.ApiManager;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.PreferencesHelper;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.DataBaseUsageManager;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
@@ -34,40 +31,22 @@ public class DataManager {
         this.rxChatBus = rxChatBus;
         this.dataBaseUsageManager = dataBaseUsageManager;
     }
-
-    // TODO try change callbacks to Observables
     public Observable<List<TweetUiModel>> getCurrentUserTwits() {
-        getCurrentUserTweetsInternetCall();
         return Observable.concat(
-                rxChatBus.getPsOnTweetsMessagesObservable(),
-                dataBaseUsageManager.getAmpTodayFiles())
+                getCurrentUserTweetsInternetCall(),
+                dataBaseUsageManager.getTweets())
                 .filter(tweetUiModelList -> tweetUiModelList != null)
                 .first();
     }
-    private void getCurrentUserTweetsInternetCall(){
-        apiManager.getCurrentUserTwits(new Callback<List<Tweet>>() {
-            @Override
-            public void success(Result<List<Tweet>> list) {
-                rxChatBus.getPsOnTweetsMessages().onNext(
-                        Observable.just(list.data).
-                                flatMap((List<Tweet> tweetList) ->
-                                        Observable.from(tweetList)
-                                                .map(( elem) -> new TweetUiModel(
-                                                        elem.idStr,
-                                                        elem.text,
-                                                        elem.user,
-                                                        elem.createdAt,
-                                                        elem.retweetCount)
-                                                )
-                                                .toList()
-                                ));
-            }
 
-            @Override
-            public void failure(TwitterException e) {
-                rxChatBus.getPsOnTweetsMessages().onError(e);
-            }
-        });
+    private Observable<List<TweetUiModel>> getCurrentUserTweetsInternetCall(){
+        return apiManager.getCurrentUserTwits()
+                .flatMap((List<Tweet> tweetList) -> Observable.from(tweetList)
+                        .map(elem -> new TweetUiModel(
+                                elem.idStr, elem.text, elem.user, elem.createdAt, elem.retweetCount)).toList());
+
+
+
     }
     public void safeUserId(long currentUserId) {
         preferencesHelper.setUserId(currentUserId);

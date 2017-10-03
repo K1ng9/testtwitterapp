@@ -4,7 +4,7 @@ package com.soft.unikey.vkluchak.testtwitterapp.data.api;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.soft.unikey.vkluchak.testtwitterapp.BuildConfig;
 import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.AuthenticatedClient;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 
@@ -15,9 +15,6 @@ import javax.inject.Singleton;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit.RestAdapter;
-import retrofit.android.MainThreadExecutor;
-import retrofit.converter.GsonConverter;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -26,16 +23,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by user on 23.09.17.
  */
 @Singleton
-public class Api {
+public class Api{
     private final static String API_BASE_URL = "https://api.twitter.com";
     private final static String API_VERSION = "/1.1/";
 
     private TwitterApi apiBase;
     private TwitterSession session;
+    private ApiClient twitterApiClient;
 
     @Inject
     public Api() {
-        apiBase = Factory.makeTwitterBaseApi();
+        //apiBase = Factory.makeTwitterBaseApi();
         //session = Factory.makeTwitterSession();
     }
 
@@ -45,22 +43,41 @@ public class Api {
     }
 
     public TwitterSession getSession() {
-        if(session == null){
-            createSession();
-        }
         return session;
     }
 
-    public void createSession() {
+    public void createApiClient() {
         session = Factory.makeTwitterSession();
+        twitterApiClient = new ApiClient(session);
+        apiBase = twitterApiClient.getTwitterService();
     }
 
     public static class Factory {
         public static TwitterApi makeTwitterBaseApi() {
+
+            //return  configureTwitterBuilder();
             return configureRetrofitBuilder(
                     configureHttpClient(), API_BASE_URL + API_VERSION)
                     .create(TwitterApi.class);
+
         }
+/*
+        private static TwitterApi configureTwitterBuilder() {
+            final TwitterSession activeSession = TwitterCore.getInstance()
+                    .getSessionManager().getActiveSession();
+
+            // pass custom OkHttpClient into TwitterApiClient and add to TwitterCore
+            final TwitterApiClient customApiClient;
+            if (activeSession != null) {
+                customApiClient = new TwitterApiClient(activeSession, configureHttpClient());
+                TwitterCore.getInstance().addApiClient(activeSession, customApiClient);
+            } else {
+                customApiClient = new TwitterApiClient(configureHttpClient());
+                TwitterCore.getInstance().addGuestApiClient(customApiClient);
+            }
+            return null;
+        }
+        */
 
         private static Retrofit configureRetrofitBuilder(OkHttpClient okHttpClient, String currentUrl) {
             Retrofit.Builder builder = new Retrofit.Builder()

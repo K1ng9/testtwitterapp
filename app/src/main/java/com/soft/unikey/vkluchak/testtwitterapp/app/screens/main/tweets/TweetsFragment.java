@@ -86,6 +86,13 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     }
 
     @Override
+    public void onError(Throwable e) {
+        Log.d("TwitterKit", "TweetsFragment failure", e);
+        Toast.makeText(getActivity() , "TweetsFragment failure: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         tweetsPresenter.detachView();

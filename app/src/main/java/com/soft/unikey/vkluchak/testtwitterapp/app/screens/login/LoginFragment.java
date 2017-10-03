@@ -41,18 +41,7 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
     @Inject
     LoginPresenter loginPresenter;
 
-    @BindView(R.id.screen_name)
-    TextView screen_name;
-    @BindView(R.id.user_name)
-    TextView user_name;
-    @BindView(R.id.user_location)
-    TextView user_location;
-    @BindView(R.id.user_timezone)
-    TextView user_timezone;
-    @BindView(R.id.user_description)
-    TextView user_description;
-    @BindView(R.id.profile_pic)
-    ImageView user_picture;
+
 
     public static LoginFragment newInstance() {
         return new LoginFragment();

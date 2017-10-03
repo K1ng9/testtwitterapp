@@ -1,6 +1,7 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data;
 
 import com.soft.unikey.vkluchak.testtwitterapp.app.events.RXPublishSubBus;
+import com.soft.unikey.vkluchak.testtwitterapp.app.receivers.NetworkReceiver;
 import com.soft.unikey.vkluchak.testtwitterapp.data.api.ApiManager;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.PreferencesHelper;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.DataBaseUsageManager;
@@ -23,13 +24,16 @@ public class DataManager {
     private final ApiManager apiManager;
     private final RXPublishSubBus rxChatBus;
     private final DataBaseUsageManager dataBaseUsageManager;
+    private final NetworkReceiver networkReceiver;
 
     @Inject
-    public DataManager(ApiManager apiManager, PreferencesHelper preferencesHelper, RXPublishSubBus rxChatBus, DataBaseUsageManager dataBaseUsageManager) {
+    public DataManager(ApiManager apiManager, PreferencesHelper preferencesHelper, RXPublishSubBus rxChatBus, DataBaseUsageManager dataBaseUsageManager,
+                       NetworkReceiver networkReceiver) {
         this.apiManager = apiManager;
         this.preferencesHelper = preferencesHelper;
         this.rxChatBus = rxChatBus;
         this.dataBaseUsageManager = dataBaseUsageManager;
+        this.networkReceiver = networkReceiver;
     }
     public Observable<List<TweetUiModel>> getCurrentUserTwits() {
         return Observable.concat(

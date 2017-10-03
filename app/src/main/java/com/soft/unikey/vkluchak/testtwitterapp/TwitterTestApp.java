@@ -2,9 +2,12 @@ package com.soft.unikey.vkluchak.testtwitterapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
+import com.soft.unikey.vkluchak.testtwitterapp.app.receivers.NetworkReceiver;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.component.ApplicationComponent;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.component.DaggerApplicationComponent;
 import com.soft.unikey.vkluchak.testtwitterapp.injection.module.ApplicationModule;

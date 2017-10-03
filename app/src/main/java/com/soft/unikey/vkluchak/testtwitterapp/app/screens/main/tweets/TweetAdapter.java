@@ -2,13 +2,17 @@ package com.soft.unikey.vkluchak.testtwitterapp.app.screens.main.tweets;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
 import com.soft.unikey.vkluchak.testtwitterapp.app.utils.DateConverterUtils;
+import com.soft.unikey.vkluchak.testtwitterapp.app.utils.ImageLoadUtil;
 import com.soft.unikey.vkluchak.testtwitterapp.app.utils.TextViewUtils;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -47,6 +51,10 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if(tweetItem.getUser() != null) {
             holder.tvUserName.setText(
                     TextViewUtils.getTextForTextView(mContext, tweetItem.user.name));
+
+            if(!TextUtils.isEmpty(tweetItem.getUser().getProfileImageUrl())) {
+                ImageLoadUtil.loadPersonImageByUrl(mContext, holder.ivUserAvatar, tweetItem.getUser().getProfileImageUrl());
+            }
         }
 
         holder.tvCreatedAt.setText(
@@ -55,6 +63,8 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                         DateConverterUtils.convertFromUtcToUiFormat(tweetItem.createdAt)));
         holder.tvText.setText(
                 TextViewUtils.getTextForTextView(mContext, tweetItem.text));
+
+
     }
 
     public void setNewData(List<TweetUiModel> tweetList) {
@@ -71,6 +81,8 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public class TweeterViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.ivUserAvatar)
+        ImageView ivUserAvatar;
         @BindView(R.id.tvUserName)
         TextView tvUserName;
         @BindView(R.id.tvCreatedAt)

@@ -61,4 +61,13 @@ public class TweetUiModel {
         return user;
     }
 
+
+    public boolean isTweetSync() {
+        return isTweetSync;
+    }
+
+    public void setTweetSync(boolean tweetSync) {
+        isTweetSync = tweetSync;
+    }
+
 }

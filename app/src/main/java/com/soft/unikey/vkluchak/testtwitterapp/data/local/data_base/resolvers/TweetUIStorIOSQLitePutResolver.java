@@ -44,6 +44,11 @@ public class TweetUIStorIOSQLitePutResolver extends DefaultPutResolver<TweetUiMo
         cv.put(TweetDBTable.Entry.COLUMN_RETWEETED_COUNT, object.getRetweetCount());
         cv.put(TweetDBTable.Entry.COLUMN_TWEET_TEXT, object.getText());
         cv.put(TweetDBTable.Entry.COLUMN_USER_ID, object.getUser().getId());
+        if(object.isTweetSync()) {
+            cv.put(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC, 1);
+        }else {
+            cv.put(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC, 0);
+        }
         return cv;
     }
 }

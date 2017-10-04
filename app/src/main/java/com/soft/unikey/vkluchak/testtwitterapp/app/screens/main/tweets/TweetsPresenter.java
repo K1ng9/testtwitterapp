@@ -54,18 +54,18 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onCompleted() {
-
+                        Timber.e("sendTweet onCompleted: ");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e("CurrentInspectionsResponse onError: " + e);
+                        Timber.e("sendTweet onError: " + e);
                         if(mMvpView != null) mMvpView.onError(e);
                     }
 
                     @Override
                     public void onNext(Void responseBodyResponse) {
-                        Timber.i("getCurrentUserTwits onNext: " + responseBodyResponse);
+                        Timber.i("sendTweet onNext: " + responseBodyResponse);
                         if (mMvpView != null) mMvpView.sendTweetSuccessful();
                     }
                 });
@@ -83,7 +83,7 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e("CurrentInspectionsResponse onError: " + e);
+                        Timber.e("getCurrentUserTwits onError: " + e);
                         if(mMvpView != null) mMvpView.onError(e);
                     }
 
@@ -107,7 +107,7 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e("CurrentInspectionsResponse onError: " + e);
+                        Timber.e("isSycSuccessful onError: " + e);
                         if(mMvpView != null) mMvpView.onError(e);
                     }
 

@@ -108,6 +108,8 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
     public void OnClick(){
         if(!TextUtils.isEmpty(edittext_chatbox.getText())) {
             tweetsPresenter.sendTweet(edittext_chatbox.getText().toString());
+            edittext_chatbox.setText("");
+            mSwipeRefreshLayout.setRefreshing(true);
         }
     }
 

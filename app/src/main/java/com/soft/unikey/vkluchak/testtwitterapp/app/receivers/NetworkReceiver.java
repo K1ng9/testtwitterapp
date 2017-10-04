@@ -3,27 +3,28 @@ package com.soft.unikey.vkluchak.testtwitterapp.app.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
+import com.soft.unikey.vkluchak.testtwitterapp.app.events.ConnectionChangeEvent;
+import com.soft.unikey.vkluchak.testtwitterapp.app.events.RXPublishSubBus;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by new on 03.10.17.
  */
 public class NetworkReceiver extends BroadcastReceiver {
-    @Inject
-    public NetworkReceiver() {
-        // Registers BroadcastReceiver to track network connection changes.
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = new NetworkReceiver();
-        this.registerReceiver(receiver, filter);
+    public static final String ANY = "Any";
+
+    public RXPublishSubBus rxChatBus;
+
+    public static NetworkReceiver newInstance() {
+        return new NetworkReceiver();
     }
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -31,27 +32,23 @@ public class NetworkReceiver extends BroadcastReceiver {
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = conn.getActiveNetworkInfo();
 
-        // Checks the user prefs and the network connection. Based on the result, decides whether
-        // to refresh the display or keep the current display.
-        // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-        if (WIFI.equals(sPref) && networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            // If device has its Wi-Fi connection, sets refreshDisplay
-            // to true. This causes the display to be refreshed when the user
-            // returns to the app.
-            refreshDisplay = true;
-            //   Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
+        // If the setting is ANY network and there is a network connection
+        // (which by process of elimination would be mobile), sets refreshDisplay to true.
+        if (networkInfo != null) {
+          //  rxChatBus.getPsOnInternetConfigChange().onNext(true);
+            EventBus.getDefault().post(new ConnectionChangeEvent(true));
 
-            // If the setting is ANY network and there is a network connection
-            // (which by process of elimination would be mobile), sets refreshDisplay to true.
-        } else if (ANY.equals(sPref) && networkInfo != null) {
-            refreshDisplay = true;
-
+            //  networkInfo.getType();
+            //  refreshDisplay = true;
             // Otherwise, the app can't download content--either because there is no network
             // connection (mobile or Wi-Fi), or because the pref setting is WIFI, and there
             // is no Wi-Fi connection.
             // Sets refreshDisplay to false.
         } else {
-            refreshDisplay = false;
+            EventBus.getDefault().post(new ConnectionChangeEvent(false));
+
+            //rxChatBus.getPsOnInternetConfigChange().onNext(false);
+            // refreshDisplay = false;
             Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
         }
     }

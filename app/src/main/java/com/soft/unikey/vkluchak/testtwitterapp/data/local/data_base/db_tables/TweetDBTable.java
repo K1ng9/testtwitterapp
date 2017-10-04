@@ -20,7 +20,8 @@ public class TweetDBTable extends BaseDBObject {
                     TweetDBTable.Entry.COLUMN_TWEET_TEXT + TEXT_TYPE + COMMA_SEP +
                     TweetDBTable.Entry.COLUMN_USER_ID + TEXT_TYPE + COMMA_SEP +
                     TweetDBTable.Entry.COLUMN_CREATED_AT + TEXT_TYPE + COMMA_SEP +
-                    TweetDBTable.Entry.COLUMN_RETWEETED_COUNT + INT_TYPE +
+                    TweetDBTable.Entry.COLUMN_RETWEETED_COUNT + INT_TYPE + COMMA_SEP +
+                    TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC + INT_TYPE +
                     " )";
 
     @NonNull
@@ -43,5 +44,6 @@ public class TweetDBTable extends BaseDBObject {
         public static final String COLUMN_USER_ID = "user_id";
         public static final String COLUMN_CREATED_AT = "created_at";
         public static final String COLUMN_RETWEETED_COUNT = "retweeted_count";
+        public static final String COLUMN_IS_TWEET_SYNC = "is_tweet_sync";
     }
 }

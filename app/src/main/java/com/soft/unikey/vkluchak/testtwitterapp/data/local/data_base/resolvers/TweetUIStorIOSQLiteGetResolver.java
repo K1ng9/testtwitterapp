@@ -46,7 +46,9 @@ public class TweetUIStorIOSQLiteGetResolver extends DefaultGetResolver<TweetUiMo
                 cursor.getString(cursor.getColumnIndexOrThrow(TweetDBTable.Entry.COLUMN_TWEET_TEXT)),
                 user,
                 cursor.getString(cursor.getColumnIndexOrThrow(TweetDBTable.Entry.COLUMN_CREATED_AT)),
-                cursor.getInt(cursor.getColumnIndexOrThrow(TweetDBTable.Entry.COLUMN_RETWEETED_COUNT)));
+                cursor.getInt(cursor.getColumnIndexOrThrow(TweetDBTable.Entry.COLUMN_RETWEETED_COUNT)),
+                cursor.getInt(cursor.getColumnIndexOrThrow(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC)));
+
     }
 
     @NonNull

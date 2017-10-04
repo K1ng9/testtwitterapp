@@ -17,7 +17,7 @@ import rx.subjects.PublishSubject;
 public class RXPublishSubBus {
 
     private final PublishSubject<List<TweetUiModel>> psOnTweetsMessages;
-    private final PublishSubject<Object> psOnInternetConfigChange;
+    private final PublishSubject<Boolean> psOnInternetConfigChange;
 
     @Inject
     public RXPublishSubBus(){
@@ -31,7 +31,7 @@ public class RXPublishSubBus {
         return psOnTweetsMessages;
     }
 
-    public PublishSubject<Object> getPsOnInternetConfigChange() {
+    public PublishSubject<Boolean> getPsOnInternetConfigChange() {
         return psOnInternetConfigChange;
     }
 
@@ -40,7 +40,7 @@ public class RXPublishSubBus {
         return psOnTweetsMessages.asObservable();
     }
 
-    public Observable<Object> getPsOnInternetConfigChangesObservable() {
+    public Observable<Boolean> getPsOnInternetConfigChangesObservable() {
         return psOnInternetConfigChange.asObservable();
     }
 }

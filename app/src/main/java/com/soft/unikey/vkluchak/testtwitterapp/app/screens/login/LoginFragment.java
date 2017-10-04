@@ -41,8 +41,6 @@ public class LoginFragment extends BaseFragment implements LoginMvpView {
     @Inject
     LoginPresenter loginPresenter;
 
-
-
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }

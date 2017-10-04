@@ -68,4 +68,28 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
                     }
                 });
     }
+
+    public void startSync() {
+        mSubscription = mDataManager.startSync()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("CurrentInspectionsResponse onError: " + e);
+                        if(mMvpView != null) mMvpView.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(Boolean isSycSuccessful) {
+                        Timber.i("isSycSuccessful onNext: " + isSycSuccessful);
+                        if (mMvpView != null) mMvpView.syncSuccessful(isSycSuccessful);
+                    }
+                });
+    }
 }

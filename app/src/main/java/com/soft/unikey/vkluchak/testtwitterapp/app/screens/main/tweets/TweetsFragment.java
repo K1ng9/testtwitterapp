@@ -11,10 +11,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
+import com.soft.unikey.vkluchak.testtwitterapp.app.events.ConnectionChangeEvent;
 import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseFragment;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +64,9 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         dataList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity());
         adapter = new TweetAdapter(getActivity(), dataList);
-
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
     }
@@ -71,7 +74,17 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
     @Override
     public void onStart() {
         super.onStart();
+        EventBus.getDefault().register(this);
         tweetsPresenter.getCurrentUserTwits();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDownloadResolutionEvent(ConnectionChangeEvent connectionChangeEvent) {
+        if(connectionChangeEvent.isInternetConnectionExist()){
+            tweetsPresenter.startSync();
+        }else {
+            tweetsPresenter.getCurrentUserTwits();
+        }
     }
 
     @Override
@@ -85,6 +98,8 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
         Toast.makeText(getActivity() , "TweetsFragment failure: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
 
+
+
     @Override
     public void onError(Throwable e) {
         Log.d("TwitterKit", "TweetsFragment failure", e);
@@ -92,6 +107,17 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView{
 
     }
 
+    @Override
+    public void syncSuccessful(Boolean isSycSuccessful) {
+        tweetsPresenter.getCurrentUserTwits();
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

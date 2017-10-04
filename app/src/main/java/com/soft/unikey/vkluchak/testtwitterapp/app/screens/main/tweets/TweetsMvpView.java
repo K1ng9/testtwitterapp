@@ -17,4 +17,7 @@ public interface TweetsMvpView extends MvpView {
     void onError(TwitterException e);
 
     void onError(Throwable e);
+
+    void syncSuccessful(Boolean isSycSuccessful);
+
 }

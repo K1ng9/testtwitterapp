@@ -4,6 +4,7 @@ import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.data_base.db_tables.TweetDBTable;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
+import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.UserUiModel;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class DataBaseUsageManager {
     private final StorIOSQLite storIOSQLite;
 
     @Inject
-    DataBaseUsageManager(StorIOSQLite storIOSQLite){
+    DataBaseUsageManager(StorIOSQLite storIOSQLite) {
         this.storIOSQLite = storIOSQLite;
     }
 
@@ -34,4 +35,18 @@ public class DataBaseUsageManager {
                 .asRxObservable();
     }
 
+    public void addOrUpdateTweets(List<TweetUiModel> tweetUiModels) {
+        storIOSQLite
+                .put()
+                .objects(tweetUiModels)
+                .prepare()
+                .executeAsBlocking();
+    }
+    public void addOrUpdateUsers(List<UserUiModel> userUiModels) {
+        storIOSQLite
+                .put()
+                .objects(userUiModels)
+                .prepare()
+                .executeAsBlocking();
+    }
 }

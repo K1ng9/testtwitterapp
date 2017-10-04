@@ -89,4 +89,7 @@ dependencies {
     provided 'com.pushtorefresh.storio:sqlite-annotations:1.12.3'
     annotationProcessor 'com.pushtorefresh.storio:sqlite-annotations-processor:1.12.3'
 
+
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 }

@@ -19,6 +19,7 @@ public class TweetUiModel {
     public int retweetCount;
     @SerializedName("user")
     public UserUiModel user;
+    public boolean isTweetSync;
 
     public TweetUiModel(String id, String text, User user, String createdAt, int retweetCount) {
         this.id = id;
@@ -26,13 +27,19 @@ public class TweetUiModel {
         this.user = new UserUiModel(user.idStr , user.name, user.email, user.description, user.profileImageUrl );
         this.createdAt = createdAt;
         this.retweetCount = retweetCount;
+        this.isTweetSync = true;
     }
-    public TweetUiModel(String id, String text, UserUiModel user, String createdAt, int retweetCount) {
+    public TweetUiModel(String id, String text, UserUiModel user, String createdAt, int retweetCount, int isTweetSync ) {
         this.id = id;
         this.text = text;
         this.user = user;
         this.createdAt = createdAt;
         this.retweetCount = retweetCount;
+        if(isTweetSync == 0 ){
+            this.isTweetSync = false;
+        }else {
+            this.isTweetSync = true;
+        }
     }
     public String getId() {
         return id;

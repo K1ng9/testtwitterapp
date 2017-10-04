@@ -1,6 +1,7 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data.api;
 
 import com.soft.unikey.vkluchak.testtwitterapp.data.api.util.InternetConnectionUtil;
+import com.squareup.picasso.Downloader;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -13,6 +14,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -42,6 +45,13 @@ public class ApiManager {
        return internetConnection.isInternetOn()
                 .switchMap(connectionStatus ->
                         api.getApiBase().getHomeTimeLine(api.getSession().getUserId()));
+    }
+
+    public Observable<Void> sendTweet(String tweet){
+        return internetConnection.isInternetOn()
+                .switchMap(connectionStatus ->
+                        api.getApiBase().sendNewTweet(tweet));
+
     }
 
     private void createServices() {

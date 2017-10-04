@@ -5,10 +5,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.soft.unikey.vkluchak.testtwitterapp.R;
@@ -29,6 +31,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -42,6 +45,8 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
 
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.edittext_chatbox)
+    EditText edittext_chatbox;
 
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<TweetUiModel> dataList;
@@ -98,6 +103,14 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
         }
     }
 
+
+    @OnClick(R.id.button_chatbox_send)
+    public void OnClick(){
+        if(!TextUtils.isEmpty(edittext_chatbox.getText())) {
+            tweetsPresenter.sendTweet(edittext_chatbox.getText().toString());
+        }
+    }
+
     @Override
     public void currentUserTweetsList(List<TweetUiModel> newTweetsList) {
         mSwipeRefreshLayout.setRefreshing(false);
@@ -123,6 +136,11 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
 
     @Override
     public void syncSuccessful(Boolean isSycSuccessful) {
+        tweetsPresenter.getCurrentUserTwits();
+    }
+
+    @Override
+    public void sendTweetSuccessful() {
         tweetsPresenter.getCurrentUserTwits();
     }
 

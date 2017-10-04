@@ -20,4 +20,5 @@ public interface TweetsMvpView extends MvpView {
 
     void syncSuccessful(Boolean isSycSuccessful);
 
+    void sendTweetSuccessful();
 }

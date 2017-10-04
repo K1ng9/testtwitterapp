@@ -17,6 +17,8 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Observable;
 
 import static java.util.Collections.addAll;
@@ -47,6 +49,12 @@ public class DataManager {
                 .first();
     }
 
+
+    public Observable<Void> sendTweet(String tweetText) {
+        return apiManager.sendTweet(tweetText);
+    }
+
+
     private Observable<List<TweetUiModel>> getCurrentUserTweetsInternetCall() {
         return apiManager.getCurrentUserTwits()
                 .flatMap((List<Tweet> tweetList) -> Observable.from(tweetList)
@@ -60,12 +68,12 @@ public class DataManager {
 
     }
 
-    private void saveDataToDb(List<TweetUiModel> tweetListFromServer){
+    private void saveDataToDb(List<TweetUiModel> tweetListFromServer) {
         dataBaseUsageManager.addOrUpdateTweets(tweetListFromServer);
 
         // TODO change To observable
         List<UserUiModel> usersListToAddList = new ArrayList<>();
-        for(TweetUiModel item: tweetListFromServer ) {
+        for (TweetUiModel item : tweetListFromServer) {
             usersListToAddList.add(item.getUser());
         }
         dataBaseUsageManager.addOrUpdateUsers(usersListToAddList);

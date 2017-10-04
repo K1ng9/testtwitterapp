@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -43,6 +45,30 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
     public void detachView() {
         if (mSubscription != null) mSubscription.unsubscribe();
         mMvpView = null;
+    }
+
+    void sendTweet(String tweetText){
+        mSubscription = mDataManager.sendTweet(tweetText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("CurrentInspectionsResponse onError: " + e);
+                        if(mMvpView != null) mMvpView.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(Void responseBodyResponse) {
+                        Timber.i("getCurrentUserTwits onNext: " + responseBodyResponse);
+                        if (mMvpView != null) mMvpView.sendTweetSuccessful();
+                    }
+                });
     }
 
     void getCurrentUserTwits(){

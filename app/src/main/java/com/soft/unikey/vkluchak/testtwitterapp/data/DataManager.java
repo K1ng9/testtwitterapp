@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Created by user on 23.09.17.
@@ -46,18 +47,27 @@ public class DataManager {
 
 
     public Observable<PutResult> sendTweet(String tweetText) {
-        createTweetHolder(tweetText);
+        return createDbTweetTempItem(tweetText)
+                .flatMap((PutResult putResult) -> apiManager.sendTweet(tweetText))
+                .flatMap(this::updateDbTweetToServer);
+
+    }
+
+    public Observable<PutResult> sentTweetFromDb(String tweetText){
         return apiManager.sendTweet(tweetText)
-                .flatMap((Tweet createdTweet) ->
-                        dataBaseUsageManager.addOrUpdateTweetObservable(
-                                new TweetUiModel(createdTweet.idStr, createdTweet.text,
-                                        createdTweet.user, createdTweet.createdAt, createdTweet.retweetCount)));
+                .flatMap(this::updateDbTweetToServer);
     }
 
 
-    private void createTweetHolder(String tweetText) {
-        dataBaseUsageManager.addOrUpdateTweetBlock(new TweetUiModel(UUID.randomUUID().toString(), tweetText,
+    private Observable<PutResult> createDbTweetTempItem(String tweetText) {
+        return dataBaseUsageManager.addOrUpdateTweetObservable(new TweetUiModel(UUID.randomUUID().toString(), tweetText,
                 null, null, 0, 0));
+    }
+
+    private Observable<PutResult> updateDbTweetToServer(Tweet createdTweet) {
+        return dataBaseUsageManager.addOrUpdateTweetObservable(
+                new TweetUiModel(createdTweet.idStr, createdTweet.text,
+                        createdTweet.user, createdTweet.createdAt, createdTweet.retweetCount));
     }
 
 
@@ -89,10 +99,12 @@ public class DataManager {
         apiManager.createSession();
     }
 
-    public boolean startSync() {
-        return dataBaseUsageManager.getNotSyncTweets().flatMap((List< TweetUiModel> tweetList) -> Observable.from(tweetList)
-                .map(elem ->
-                        sendTweet(elem.getText()
-                )));
+
+    public Observable<PutResult> startSync() {
+        return dataBaseUsageManager.getNotSyncTweets()
+                .filter(list -> list != null)
+                .flatMap(Observable::from)
+                .flatMap(tweetUiModel -> sentTweetFromDb(tweetUiModel.getText()));
+
     }
 }

@@ -31,7 +31,7 @@ public class DataBaseUsageManager {
         return storIOSQLite
                 .get()
                 .listOfObjects(TweetUiModel.class)
-                .withQuery(Query.builder().table(TweetDBTable.Entry.TABLE_NAME).build())
+                .withQuery(Query.builder().table(TweetDBTable.Entry.TABLE_NAME).orderBy(TweetDBTable.Entry.COLUMN_CREATED_AT).build())
                 .prepare()
                 .asRxObservable();
     }
@@ -40,7 +40,7 @@ public class DataBaseUsageManager {
                 .get()
                 .listOfObjects(TweetUiModel.class)
                 .withQuery(Query.builder().table(TweetDBTable.Entry.TABLE_NAME)
-                        .where(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC)
+                        .where(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC +" = ?")
                         .whereArgs(0) // 0 it's false
                         .build())
                 .prepare()

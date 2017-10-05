@@ -97,10 +97,10 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
     }
 
     public void startSync() {
-        mSubscription = mDataManager.startSync()
+        mSubscription = mDataManager.startSync().toList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Boolean>() {
+                .subscribe(new Subscriber<List<PutResult>>() {
                     @Override
                     public void onCompleted() {
 
@@ -109,13 +109,13 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e("isSycSuccessful onError: " + e);
-                        if(mMvpView != null) mMvpView.onError(e);
+                       // if(mMvpView != null) mMvpView.onError(e);
                     }
 
                     @Override
-                    public void onNext(Boolean isSycSuccessful) {
-                        Timber.i("isSycSuccessful onNext: " + isSycSuccessful);
-                        if (mMvpView != null) mMvpView.syncSuccessful(isSycSuccessful);
+                    public void onNext(List<PutResult> putResults) {
+                        Timber.i("isSycSuccessful onNext: " + putResults);
+                        if (mMvpView != null) mMvpView.syncSuccessful(putResults);
                     }
                 });
     }

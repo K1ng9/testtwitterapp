@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.soft.unikey.vkluchak.testtwitterapp.R;
 import com.soft.unikey.vkluchak.testtwitterapp.app.events.ConnectionChangeEvent;
 import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.BaseFragment;
@@ -137,7 +138,7 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
     }
 
     @Override
-    public void syncSuccessful(Boolean isSycSuccessful) {
+    public void syncSuccessful(List<PutResult> putResults) {
         tweetsPresenter.getCurrentUserTwits();
     }
 

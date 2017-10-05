@@ -10,6 +10,7 @@ import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -37,7 +38,6 @@ public class ApiManager {
 
     public void createSession() {
         api.createApiClient();
-        createServices();
     }
 
     //TODO change it into Observables
@@ -50,13 +50,8 @@ public class ApiManager {
     public Observable<Tweet> sendTweet(String tweet){
         return internetConnection.isInternetOn()
                 .switchMap(connectionStatus ->
-                        api.getApiBase().sendNewTweet(tweet));
+                        api.getApiBase().sendNewTweet(tweet)).delay(3, TimeUnit.SECONDS);
 
     }
 
-    private void createServices() {
-        //searchService = Twitter.getApiClient(api.getSession()).getSearchService();
-        //listService = Twitter.getApiClient(api.getSession()).getListService();
-        //statusesService = Twitter.getApiClient(api.getSession()).getStatusesService();
-    }
 }

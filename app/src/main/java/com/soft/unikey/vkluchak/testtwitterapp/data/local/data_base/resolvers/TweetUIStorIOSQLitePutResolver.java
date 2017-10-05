@@ -30,8 +30,8 @@ public class TweetUIStorIOSQLitePutResolver extends DefaultPutResolver<TweetUiMo
     protected UpdateQuery mapToUpdateQuery(@NonNull TweetUiModel object) {
         return UpdateQuery.builder()
                 .table(TweetDBTable.Entry.TABLE_NAME)
-                .where(TweetDBTable.Entry.COLUMN_TWEET_ID + " = ?")
-                .whereArgs(object.getId())
+                .where(TweetDBTable.Entry.COLUMN_TWEET_TEXT + " = ?")
+                .whereArgs(object.getText())
                 .build();
     }
 
@@ -43,7 +43,9 @@ public class TweetUIStorIOSQLitePutResolver extends DefaultPutResolver<TweetUiMo
         cv.put(TweetDBTable.Entry.COLUMN_CREATED_AT, object.getCreatedAt());
         cv.put(TweetDBTable.Entry.COLUMN_RETWEETED_COUNT, object.getRetweetCount());
         cv.put(TweetDBTable.Entry.COLUMN_TWEET_TEXT, object.getText());
-        cv.put(TweetDBTable.Entry.COLUMN_USER_ID, object.getUser().getId());
+        if(object.getUser() != null) {
+            cv.put(TweetDBTable.Entry.COLUMN_USER_ID, object.getUser().getId());
+        }
         if(object.isTweetSync()) {
             cv.put(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC, 1);
         }else {

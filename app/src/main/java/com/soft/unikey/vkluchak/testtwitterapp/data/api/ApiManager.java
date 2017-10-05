@@ -47,7 +47,7 @@ public class ApiManager {
                         api.getApiBase().getHomeTimeLine(api.getSession().getUserId()));
     }
 
-    public Observable<Void> sendTweet(String tweet){
+    public Observable<Tweet> sendTweet(String tweet){
         return internetConnection.isInternetOn()
                 .switchMap(connectionStatus ->
                         api.getApiBase().sendNewTweet(tweet));

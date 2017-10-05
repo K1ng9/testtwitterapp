@@ -29,5 +29,5 @@ public interface TwitterApi {
     Observable<List<Tweet>> getHomeTimeLine(@Query("user_id") long id);
 
     @POST("/1.1/statuses/update.json")
-    Observable<Void> sendNewTweet(@Query("status") String textTwitter);
+    Observable<Tweet> sendNewTweet(@Query("status") String textTwitter);
 }

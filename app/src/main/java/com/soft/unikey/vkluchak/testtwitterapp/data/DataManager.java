@@ -1,7 +1,7 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data;
 
+import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.soft.unikey.vkluchak.testtwitterapp.app.events.RXPublishSubBus;
-import com.soft.unikey.vkluchak.testtwitterapp.app.receivers.NetworkReceiver;
 import com.soft.unikey.vkluchak.testtwitterapp.data.api.ApiManager;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.PreferencesHelper;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.DataBaseUsageManager;
@@ -10,18 +10,13 @@ import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.UserUiModel;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 import rx.Observable;
-
-import static java.util.Collections.addAll;
 
 /**
  * Created by user on 23.09.17.
@@ -50,8 +45,19 @@ public class DataManager {
     }
 
 
-    public Observable<Void> sendTweet(String tweetText) {
-        return apiManager.sendTweet(tweetText);
+    public Observable<PutResult> sendTweet(String tweetText) {
+        createTweetHolder(tweetText);
+        return apiManager.sendTweet(tweetText)
+                .flatMap((Tweet createdTweet) ->
+                        dataBaseUsageManager.addOrUpdateTweetObservable(
+                                new TweetUiModel(createdTweet.idStr, createdTweet.text,
+                                        createdTweet.user, createdTweet.createdAt, createdTweet.retweetCount)));
+    }
+
+
+    private void createTweetHolder(String tweetText) {
+        dataBaseUsageManager.addOrUpdateTweetBlock(new TweetUiModel(UUID.randomUUID().toString(), tweetText,
+                null, null, 0, 0));
     }
 
 
@@ -83,7 +89,10 @@ public class DataManager {
         apiManager.createSession();
     }
 
-    public Observable<Boolean> startSync() {
-        return null;
+    public boolean startSync() {
+        return dataBaseUsageManager.getNotSyncTweets().flatMap((List< TweetUiModel> tweetList) -> Observable.from(tweetList)
+                .map(elem ->
+                        sendTweet(elem.getText()
+                )));
     }
 }

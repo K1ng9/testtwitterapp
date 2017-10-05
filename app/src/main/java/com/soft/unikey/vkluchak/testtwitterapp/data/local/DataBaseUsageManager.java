@@ -1,6 +1,7 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data.local;
 
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
+import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 import com.soft.unikey.vkluchak.testtwitterapp.data.local.data_base.db_tables.TweetDBTable;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
@@ -34,6 +35,17 @@ public class DataBaseUsageManager {
                 .prepare()
                 .asRxObservable();
     }
+    public Observable<List<TweetUiModel>> getNotSyncTweets() {
+        return storIOSQLite
+                .get()
+                .listOfObjects(TweetUiModel.class)
+                .withQuery(Query.builder().table(TweetDBTable.Entry.TABLE_NAME)
+                        .where(TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC)
+                        .whereArgs(0) // 0 it's false
+                        .build())
+                .prepare()
+                .asRxObservable();
+    }
 
     public void addOrUpdateTweets(List<TweetUiModel> tweetUiModels) {
         storIOSQLite
@@ -42,10 +54,27 @@ public class DataBaseUsageManager {
                 .prepare()
                 .executeAsBlocking();
     }
+
     public void addOrUpdateUsers(List<UserUiModel> userUiModels) {
         storIOSQLite
                 .put()
                 .objects(userUiModels)
+                .prepare()
+                .executeAsBlocking();
+    }
+
+    public Observable<PutResult> addOrUpdateTweetObservable(TweetUiModel tweetUiModel) {
+        return storIOSQLite
+                .put()
+                .object(tweetUiModel)
+                .prepare()
+                .asRxObservable();
+    }
+
+    public void addOrUpdateTweetBlock(TweetUiModel tweetUiModel) {
+        storIOSQLite
+                .put()
+                .object(tweetUiModel)
                 .prepare()
                 .executeAsBlocking();
     }

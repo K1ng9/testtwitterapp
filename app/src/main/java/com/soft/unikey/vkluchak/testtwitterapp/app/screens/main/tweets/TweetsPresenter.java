@@ -1,5 +1,6 @@
 package com.soft.unikey.vkluchak.testtwitterapp.app.screens.main.tweets;
 
+import com.pushtorefresh.storio.sqlite.operations.put.PutResult;
 import com.soft.unikey.vkluchak.testtwitterapp.app.screens.base.Presenter;
 import com.soft.unikey.vkluchak.testtwitterapp.data.DataManager;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
@@ -51,7 +52,7 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
         mSubscription = mDataManager.sendTweet(tweetText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
+                .subscribe(new Subscriber<PutResult>() {
                     @Override
                     public void onCompleted() {
                         Timber.e("sendTweet onCompleted: ");
@@ -64,8 +65,8 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
                     }
 
                     @Override
-                    public void onNext(Void responseBodyResponse) {
-                        Timber.i("sendTweet onNext: " + responseBodyResponse);
+                    public void onNext(PutResult putResult) {
+                        Timber.i("sendTweet onNext: " + putResult);
                         if (mMvpView != null) mMvpView.sendTweetSuccessful();
                     }
                 });

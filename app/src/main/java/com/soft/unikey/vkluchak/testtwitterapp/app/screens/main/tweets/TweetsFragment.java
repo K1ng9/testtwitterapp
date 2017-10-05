@@ -119,7 +119,9 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
     public void currentUserTweetsList(List<TweetUiModel> newTweetsList) {
         mSwipeRefreshLayout.setRefreshing(false);
         adapter.setNewData(newTweetsList);
-        rvTweets.scrollToPosition(0); // scroll to last added tweet
+        if(newTweetsList != null) {
+            rvTweets.scrollToPosition(newTweetsList.size() - 1); // scroll to last added tweet
+        }
     }
 
     @Override

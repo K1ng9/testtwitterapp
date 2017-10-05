@@ -77,6 +77,7 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
         super.onViewCreated(view, savedInstanceState);
         dataList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setReverseLayout(true);
         adapter = new TweetAdapter(getActivity(), dataList);
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
@@ -118,16 +119,8 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
     public void currentUserTweetsList(List<TweetUiModel> newTweetsList) {
         mSwipeRefreshLayout.setRefreshing(false);
         adapter.setNewData(newTweetsList);
+        rvTweets.scrollToPosition(0); // scroll to last added tweet
     }
-
-    @Override
-    public void onError(TwitterException e) {
-        Log.d("TwitterKit", "TweetsFragment failure", e);
-        mSwipeRefreshLayout.setRefreshing(false);
-        Toast.makeText(getActivity() , "TweetsFragment failure: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-
 
     @Override
     public void onError(Throwable e) {
@@ -147,13 +140,19 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
         tweetsPresenter.getCurrentUserTwits();
     }
 
+    @Override
+    public void onSendTweetCompleted() {
+        if(mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
     /**
      * Called when a swipe gesture triggers a refresh.
      */
     @Override
     public void onRefresh(){
         tweetsPresenter.getCurrentUserTwits();
-
     }
 
     @Override

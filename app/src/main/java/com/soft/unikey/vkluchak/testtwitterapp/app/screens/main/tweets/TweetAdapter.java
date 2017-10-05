@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +14,6 @@ import com.soft.unikey.vkluchak.testtwitterapp.app.utils.DateConverterUtils;
 import com.soft.unikey.vkluchak.testtwitterapp.app.utils.ImageLoadUtil;
 import com.soft.unikey.vkluchak.testtwitterapp.app.utils.TextViewUtils;
 import com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model.TweetUiModel;
-import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +58,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.tvCreatedAt.setText(
                 TextViewUtils.getTextForTextView(
                         mContext,
-                        DateConverterUtils.convertFromUtcToUiFormat(tweetItem.createdAt)));
+                        DateConverterUtils.convertFromMillisToUIDateFormat(tweetItem.createdAt)));
         holder.tvText.setText(
                 TextViewUtils.getTextForTextView(mContext, tweetItem.text));
 

@@ -1,6 +1,7 @@
 package com.soft.unikey.vkluchak.testtwitterapp.data.model.ui_model;
 
 import com.google.gson.annotations.SerializedName;
+import com.soft.unikey.vkluchak.testtwitterapp.app.utils.DateConverterUtils;
 import com.twitter.sdk.android.core.models.User;
 
 /**
@@ -14,7 +15,7 @@ public class TweetUiModel {
     @SerializedName("text")
     public String text;
     @SerializedName("created_at")
-    public String createdAt;
+    public long createdAt;
     @SerializedName("retweet_count")
     public int retweetCount;
     @SerializedName("user")
@@ -25,11 +26,11 @@ public class TweetUiModel {
         this.id = id;
         this.text = text;
         this.user = new UserUiModel(user.idStr , user.name, user.email, user.description, user.profileImageUrl );
-        this.createdAt = createdAt;
+        this.createdAt = DateConverterUtils.convertFromServerDateToMillis(createdAt);
         this.retweetCount = retweetCount;
         this.isTweetSync = true;
     }
-    public TweetUiModel(String id, String text, UserUiModel user, String createdAt, int retweetCount, int isTweetSync ) {
+    public TweetUiModel(String id, String text, UserUiModel user, long createdAt, int retweetCount, int isTweetSync ) {
         this.id = id;
         this.text = text;
         this.user = user;
@@ -49,7 +50,7 @@ public class TweetUiModel {
         return text;
     }
 
-    public String getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 

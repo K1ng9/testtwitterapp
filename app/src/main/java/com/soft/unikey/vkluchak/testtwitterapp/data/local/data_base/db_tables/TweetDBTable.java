@@ -19,7 +19,7 @@ public class TweetDBTable extends BaseDBObject {
                     TweetDBTable.Entry.COLUMN_TWEET_ID + TEXT_TYPE + COMMA_SEP +
                     TweetDBTable.Entry.COLUMN_TWEET_TEXT + TEXT_TYPE + COMMA_SEP +
                     TweetDBTable.Entry.COLUMN_USER_ID + TEXT_TYPE + COMMA_SEP +
-                    TweetDBTable.Entry.COLUMN_CREATED_AT + TEXT_TYPE + COMMA_SEP +
+                    TweetDBTable.Entry.COLUMN_CREATED_AT + INT_TYPE + COMMA_SEP +
                     TweetDBTable.Entry.COLUMN_RETWEETED_COUNT + INT_TYPE + COMMA_SEP +
                     TweetDBTable.Entry.COLUMN_IS_TWEET_SYNC + INT_TYPE +
                     " )";

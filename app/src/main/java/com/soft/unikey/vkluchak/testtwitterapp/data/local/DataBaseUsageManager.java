@@ -31,7 +31,11 @@ public class DataBaseUsageManager {
         return storIOSQLite
                 .get()
                 .listOfObjects(TweetUiModel.class)
-                .withQuery(Query.builder().table(TweetDBTable.Entry.TABLE_NAME).orderBy(TweetDBTable.Entry.COLUMN_CREATED_AT).build())
+                .withQuery(
+                        Query.builder()
+                                .table(TweetDBTable.Entry.TABLE_NAME)
+                                .orderBy(TweetDBTable.Entry.COLUMN_CREATED_AT)
+                                .build())
                 .prepare()
                 .asRxObservable();
     }

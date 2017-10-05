@@ -56,6 +56,7 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
                     @Override
                     public void onCompleted() {
                         Timber.e("sendTweet onCompleted: ");
+                        if(mMvpView != null) mMvpView.onSendTweetCompleted();
                     }
 
                     @Override

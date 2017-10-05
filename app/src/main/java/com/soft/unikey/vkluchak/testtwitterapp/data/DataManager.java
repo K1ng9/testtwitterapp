@@ -45,7 +45,6 @@ public class DataManager {
                 .first();
     }
 
-
     public Observable<PutResult> sendTweet(String tweetText) {
         return createDbTweetTempItem(tweetText)
                 .flatMap((PutResult putResult) -> apiManager.sendTweet(tweetText))
@@ -61,7 +60,7 @@ public class DataManager {
 
     private Observable<PutResult> createDbTweetTempItem(String tweetText) {
         return dataBaseUsageManager.addOrUpdateTweetObservable(new TweetUiModel(UUID.randomUUID().toString(), tweetText,
-                null, null, 0, 0));
+                null, 0, 0, 0));
     }
 
     private Observable<PutResult> updateDbTweetToServer(Tweet createdTweet) {
@@ -78,7 +77,7 @@ public class DataManager {
                                 elem.idStr, elem.text, elem.user, elem.createdAt, elem.retweetCount)).toList()
                         .flatMap((List<TweetUiModel> tweetListFromServer) -> {
                                     saveDataToDb(tweetListFromServer);
-                                    return Observable.just(tweetListFromServer);
+                                    return dataBaseUsageManager.getTweets();
                                 }
                         ));
 

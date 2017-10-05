@@ -15,11 +15,12 @@ import java.util.List;
 public interface TweetsMvpView extends MvpView {
 
     void currentUserTweetsList(List<TweetUiModel> data);
-    void onError(TwitterException e);
 
     void onError(Throwable e);
 
     void syncSuccessful(List<PutResult> putResults );
 
     void sendTweetSuccessful();
+
+    void onSendTweetCompleted();
 }

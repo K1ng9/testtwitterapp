@@ -10,6 +10,7 @@
     <string name="lost_connection">Network Connections Unavailable</string>
     <string name="btn_send_tweet">SEND</string>
     <string name="et_enter_tweet">Enter Tweet</string>
+    <string name="tv_tweet_not_sync">Need to synchronize</string>
 
 
 </resources>

@@ -46,5 +46,15 @@
             android:layout_marginStart="6dp"
             android:layout_marginTop="6dp"
             android:text="@string/placeholder" />
+        <TextView
+            android:id="@+id/tvTextSyncFlag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvText"
+            android:layout_toEndOf="@+id/ivUserAvatar"
+            android:textColor="@color/colorAccent"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:text="@string/placeholder" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

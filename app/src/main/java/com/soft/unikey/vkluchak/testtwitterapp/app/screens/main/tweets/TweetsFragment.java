@@ -87,6 +87,7 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        tweetsPresenter.observeToTweetsDbTable();
     }
 
     @Override
@@ -100,8 +101,9 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
     public void onDownloadResolutionEvent(ConnectionChangeEvent connectionChangeEvent) {
         if(connectionChangeEvent.isInternetConnectionExist()){
             tweetsPresenter.startSync();
-        }else {
-            tweetsPresenter.getCurrentUserTwits();
+            if(mSwipeRefreshLayout != null) {
+                mSwipeRefreshLayout.setRefreshing(true);
+            }
         }
     }
 
@@ -117,7 +119,9 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
 
     @Override
     public void currentUserTweetsList(List<TweetUiModel> newTweetsList) {
-        mSwipeRefreshLayout.setRefreshing(false);
+        if(mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         adapter.setNewData(newTweetsList);
         if(newTweetsList != null) {
             rvTweets.scrollToPosition(newTweetsList.size() - 1); // scroll to last added tweet
@@ -134,12 +138,15 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
 
     @Override
     public void syncSuccessful(List<PutResult> putResults) {
-        tweetsPresenter.getCurrentUserTwits();
+        mSwipeRefreshLayout.setRefreshing(false);
+        Log.d("TwitterKit", "Sync Successful");
+
     }
 
     @Override
     public void sendTweetSuccessful() {
-        tweetsPresenter.getCurrentUserTwits();
+        Log.d("TwitterKit", "Send Tweet Successful");
+
     }
 
     @Override

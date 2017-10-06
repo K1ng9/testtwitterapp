@@ -66,6 +66,12 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.tvText.setText(
                 TextViewUtils.getTextForTextView(mContext, tweetItem.text));
 
+        if(tweetItem.isTweetSync()) {
+            holder.tvTextSyncFlag.setVisibility(View.GONE);
+        }else {
+            holder.tvTextSyncFlag.setVisibility(View.VISIBLE);
+            holder.tvTextSyncFlag.setText(R.string.tv_tweet_not_sync);
+        }
 
     }
 
@@ -91,6 +97,8 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvCreatedAt;
         @BindView(R.id.tvText)
         TextView tvText;
+        @BindView(R.id.tvTextSyncFlag)
+        TextView tvTextSyncFlag;
 
         public TweeterViewHolder(View itemView) {
             super(itemView);

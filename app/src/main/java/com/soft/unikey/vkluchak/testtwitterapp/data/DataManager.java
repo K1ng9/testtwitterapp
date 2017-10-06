@@ -44,6 +44,9 @@ public class DataManager {
                 .filter(tweetUiModelList -> tweetUiModelList != null)
                 .first();
     }
+    public Observable<List<TweetUiModel>> observeToTweetsDbTable(){
+        return dataBaseUsageManager.getTweets();
+    }
 
     public Observable<PutResult> sendTweet(String tweetText) {
         return createDbTweetTempItem(tweetText)

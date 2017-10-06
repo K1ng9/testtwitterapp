@@ -97,6 +97,30 @@ public class TweetsPresenter implements Presenter<TweetsMvpView> {
                 });
     }
 
+    public void observeToTweetsDbTable(){
+        mSubscription = mDataManager.observeToTweetsDbTable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<TweetUiModel>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("observeToTweetsDbTable onError: " + e);
+                        // if(mMvpView != null) mMvpView.onError(e);
+                    }
+
+                    @Override
+                    public void onNext(List<TweetUiModel> tweetUiModelList) {
+                        Timber.i("observeToTweetsDbTable onNext: " + tweetUiModelList);
+                        if (mMvpView != null) mMvpView.currentUserTweetsList(tweetUiModelList);
+                    }
+                });
+    }
+
     public void startSync() {
         mSubscription = mDataManager.startSync().toList()
                 .subscribeOn(Schedulers.io())

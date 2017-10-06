@@ -140,6 +140,8 @@ public class TweetsFragment extends BaseFragment implements TweetsMvpView, Swipe
     public void syncSuccessful(List<PutResult> putResults) {
         mSwipeRefreshLayout.setRefreshing(false);
         Log.d("TwitterKit", "Sync Successful");
+        // update tweet feed after sync
+        tweetsPresenter.getCurrentUserTwits();
 
     }
 

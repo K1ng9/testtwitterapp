@@ -46,13 +46,19 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TweeterViewHolder holder = (TweeterViewHolder) viewHolder;
         TweetUiModel tweetItem = dataList.get(position);
 
+        String userName = mContext.getString(R.string.placeholder);
+        String userProfileImageUrl = null;
+        
         if(tweetItem.getUser() != null) {
-            holder.tvUserName.setText(
-                    TextViewUtils.getTextForTextView(mContext, tweetItem.user.name));
+            userName = tweetItem.getUser().getName();
+            userProfileImageUrl = tweetItem.getUser().getProfileImageUrl();
+        }
 
-            if(!TextUtils.isEmpty(tweetItem.getUser().getProfileImageUrl())) {
-                ImageLoadUtil.loadPersonImageByUrl(mContext, holder.ivUserAvatar, tweetItem.getUser().getProfileImageUrl());
-            }
+        holder.tvUserName.setText(
+                TextViewUtils.getTextForTextView(mContext, userName));
+
+        if(!TextUtils.isEmpty(tweetItem.getUser().getProfileImageUrl())) {
+            ImageLoadUtil.loadPersonImageByUrl(mContext, holder.ivUserAvatar, userProfileImageUrl);
         }
 
         holder.tvCreatedAt.setText(

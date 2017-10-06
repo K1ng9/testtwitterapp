@@ -48,22 +48,22 @@ public class DataManager {
     public Observable<PutResult> sendTweet(String tweetText) {
         return createDbTweetTempItem(tweetText)
                 .flatMap((PutResult putResult) -> apiManager.sendTweet(tweetText))
-                .flatMap(this::updateDbTweetToServer);
+                .flatMap(this::updateDbTweetFromServer);
 
     }
 
     public Observable<PutResult> sentTweetFromDb(String tweetText){
         return apiManager.sendTweet(tweetText)
-                .flatMap(this::updateDbTweetToServer);
+                .flatMap(this::updateDbTweetFromServer);
     }
 
 
     private Observable<PutResult> createDbTweetTempItem(String tweetText) {
         return dataBaseUsageManager.addOrUpdateTweetObservable(new TweetUiModel(UUID.randomUUID().toString(), tweetText,
-                null, 0, 0, 0));
+                dataBaseUsageManager.getUserById(apiManager.getUserId()), System.currentTimeMillis(), 0, 0));
     }
 
-    private Observable<PutResult> updateDbTweetToServer(Tweet createdTweet) {
+    private Observable<PutResult> updateDbTweetFromServer(Tweet createdTweet) {
         return dataBaseUsageManager.addOrUpdateTweetObservable(
                 new TweetUiModel(createdTweet.idStr, createdTweet.text,
                         createdTweet.user, createdTweet.createdAt, createdTweet.retweetCount));

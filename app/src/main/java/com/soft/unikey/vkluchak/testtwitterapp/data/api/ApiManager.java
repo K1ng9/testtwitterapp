@@ -54,4 +54,8 @@ public class ApiManager {
 
     }
 
+    public String getUserId(){
+        return api.getSession().getUserId() +"";
+    }
+
 }

@@ -48,8 +48,8 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         String userName = mContext.getString(R.string.placeholder);
         String userProfileImageUrl = null;
-        
-        if(tweetItem.getUser() != null) {
+
+        if (tweetItem.getUser() != null) {
             userName = tweetItem.getUser().getName();
             userProfileImageUrl = tweetItem.getUser().getProfileImageUrl();
         }
@@ -57,9 +57,7 @@ public class TweetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         holder.tvUserName.setText(
                 TextViewUtils.getTextForTextView(mContext, userName));
 
-        if(!TextUtils.isEmpty(tweetItem.getUser().getProfileImageUrl())) {
-            ImageLoadUtil.loadPersonImageByUrl(mContext, holder.ivUserAvatar, userProfileImageUrl);
-        }
+        ImageLoadUtil.loadPersonImageByUrl(mContext, holder.ivUserAvatar, userProfileImageUrl);
 
         holder.tvCreatedAt.setText(
                 TextViewUtils.getTextForTextView(
